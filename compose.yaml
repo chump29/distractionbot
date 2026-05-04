@@ -1,0 +1,23 @@
+services:
+  distractionbot:
+    container_name: distractionbot
+    image: git.postfmly.com/admin/distractionbot:arm64
+    restart: unless-stopped
+    ports:
+      - "8006:8006"
+    volumes:
+      - db:/app/db
+    environment:
+      - TZ=America/Chicago
+    env_file: .env
+    labels:
+      - wud.display.name=DistractionBot
+      - homepage.group=Personal
+      - homepage.name=DistractionBot
+      - homepage.icon=https://distractionbot.postfmly.com/distractionbot.webp
+
+volumes:
+  db:
+
+
+networks: {}

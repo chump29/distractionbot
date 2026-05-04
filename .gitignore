@@ -1,0 +1,4 @@
+.env.local
+.vscode
+db/distractionbot.db*
+node_modules/
