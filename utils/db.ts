@@ -4,6 +4,7 @@ import { Database, SQLiteError } from "bun:sqlite"
 
 import { info } from "@postfmly/logger"
 
+import { sql } from "drizzle-orm"
 import { drizzle, type SQLiteBunDatabase } from "drizzle-orm/bun-sqlite"
 import pluralize from "pluralize"
 
@@ -47,36 +48,50 @@ const loadDistractions = async (): Promise<void> => {
 }
 
 const openDatabase = async (): Promise<void> => {
+  if (!Bun.env.DB_PATH) {
+    throw new Error("Invalid DB_PATH")
+  }
+
+  if (!Bun.env.DB_NAME) {
+    throw new Error("Invalid DB_NAME")
+  }
+
   await mkdir(Bun.env.DB_PATH, {
     recursive: true
   })
 
   const DB_STR: string = `${Bun.env.DB_PATH}${Bun.env.DB_NAME}`
+
   SQLITE = new Database(DB_STR, {
     create: true,
     strict: true
   })
+
   DB = drizzle({
     client: SQLITE,
     jit: true
   })
-  DB.run("PRAGMA journal_mode = WAL;")
-  DB.run("PRAGMA wal_checkpoint(TRUNCATE);")
+
+  DB.run(
+    sql.raw(`
+      PRAGMA journal_mode = WAL;
+      PRAGMA wal_checkpoint(TRUNCATE);`)
+  )
 
   try {
     await DB.select().from(distractions)
   } catch (e: unknown) {
-    if (e instanceof SQLiteError && e.message.includes("no such table")) {
+    if (e instanceof SQLiteError && e.message === "no such table: distractions") {
       if (Bun.env.DEBUG) {
         info("Creating tables...")
       }
 
-      const table: string = `
-      CREATE TABLE distractions(
-        id INTEGER PRIMARY KEY,
-        distraction TEXT NOT NULL
-      )`
-      SQLITE.run(table)
+      DB.run(
+        sql.raw(`
+        CREATE TABLE distractions(
+          id INTEGER PRIMARY KEY,
+          distraction TEXT NOT NULL);`)
+      )
 
       await loadDistractions()
     } else {

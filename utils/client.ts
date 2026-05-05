@@ -7,17 +7,22 @@ import { SERVER } from "./logo.ts"
 
 let CLIENT: Client | null = null
 
-let isShutdown: boolean = false
+const EVENTS: string[] = [
+  "SIGINT",
+  "SIGTERM"
+]
 
-const shutdown = async (): Promise<void> => {
+const shutdown = async (event: string): Promise<void> => {
+  if (Bun.env.DEBUG) {
+    info(`${event} detected`)
+  }
+
   info("Shutting down...")
-
-  isShutdown = true
 
   await closeDatabase()
     .then(async (): Promise<void> => CLIENT?.destroy())
     .then(async (): Promise<void> => await SERVER?.stop(true))
-    .then((): void => process.exit())
+    .then((): void => process.exit(0))
 }
 
 const client = async (): Promise<Client> => {
@@ -35,28 +40,10 @@ const client = async (): Promise<Client> => {
     }
   })
 
-  process.on("SIGINT", async (): Promise<void> => {
-    if (isShutdown) {
-      return
-    }
-
-    if (Bun.env.DEBUG) {
-      info("SIGINT detected")
-    }
-
-    await shutdown()
-  })
-
-  process.on("SIGTERM", async (): Promise<void> => {
-    if (isShutdown) {
-      return
-    }
-
-    if (Bun.env.DEBUG) {
-      info("SIGTERM detected")
-    }
-
-    await shutdown()
+  EVENTS.forEach((event: string): void => {
+    process.on(event, async (event: string): Promise<void> => {
+      await shutdown(event)
+    })
   })
 
   return CLIENT
@@ -65,6 +52,10 @@ const client = async (): Promise<Client> => {
 const login = async (): Promise<Client> => {
   if (!CLIENT) {
     throw new Error("Invalid client")
+  }
+
+  if (!Bun.env.TOKEN) {
+    throw new Error("Invalid TOKEN")
   }
 
   await CLIENT.login(Bun.env.TOKEN)
