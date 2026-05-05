@@ -18,7 +18,7 @@ import { COUNT, DISTRACTIONS } from "../../utils/loadDistractions.ts"
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
   return new SlashCommandBuilder()
     .setName(parse(import.meta.file).name)
-    .setDescription("Having craving")
+    .setDescription("Having a craving")
     .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
     .setContexts(InteractionContextType.Guild)
     .toJSON()

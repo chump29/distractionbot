@@ -32,12 +32,13 @@
 
 #### Commands:
 
-| 📋 Task | 🔧 Command | ⚙️ Permission |
-|:-------:|:----------:|:-------------:|
-| Craving | `/craving` | SendMessages  |
-|  Info   |  `/info`   | SendMessages  |
-|  Ping   |  `/ping`   | SendMessages  |
-| Reload  | `/reload`  | Administrator |
+|   📋 Task   |   🔧 Command   | ⚙️ Permission |
+|:-----------:|:--------------:|:-------------:|
+|   Craving   |   `/craving`   | SendMessages  |
+| Distraction | `/distraction` | SendMessages  |
+|    Info     |    `/info`     | SendMessages  |
+|    Ping     |    `/ping`     | SendMessages  |
+|   Reload    |   `/reload`    | Administrator |
 
 ---
 
