@@ -105,14 +105,14 @@
 
 #### Environment Variables:
 
-|   📝 Description   | 📌 Variable |    {...} Value    |
-|:------------------:|:-----------:|:-----------------:|
-|      DB Name       |   DB_NAME   | distractionbot.db |
-|      DB Path       |   DB_PATH   |       ./db/       |
-|       Debug        |  IS_DEBUG   |  true/**false**   |
-|      Bot Name      |    NAME     |  DistractionBot   |
-| Message Rate Limit |    RATE     |        1s         |
-|     Bot Token      |    TOKEN    |      [token]      |
+| 📝 Description | 📌 Variable |    {...} Value    |
+|:--------------:|:-----------:|:-----------------:|
+|    DB Name     |   DB_NAME   | distractionbot.db |
+|    DB Path     |   DB_PATH   |       ./db/       |
+|     Debug      |  IS_DEBUG   |  true/**false**   |
+|    Logo URL    |  LOGO_URL   |       [url]       |
+|    Bot Name    |    NAME     |  DistractionBot   |
+|   Bot Token    |    TOKEN    |      [token]      |
 
 #### From `@postfmly/logoserver`:
 

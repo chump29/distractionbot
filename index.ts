@@ -10,6 +10,8 @@ import { loadSettings } from "./utils/loadDistractions.ts"
 
 Bun.env.DEBUG = Bun.env.IS_DEBUG === "true" ? true : false
 
+Bun.env.NAME = Bun.env.NAME || "DistractionBot"
+
 await openDatabase()
   .then(async (): Promise<void> => await loadCommands(await client()))
   .then(async (): Promise<Client> => await login())
