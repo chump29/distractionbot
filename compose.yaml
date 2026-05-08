@@ -8,6 +8,10 @@ services:
     volumes:
       - db:/app/db
     environment:
+      - LOGO_NAME=distractionbot.webp
+      - LOGO_PATH=./utils/images
+      - LOGO_PORT=8006
+      - LOGO_URL=https://distractionbot.postfmly.us/distractionbot.webp
       - TZ=America/Chicago
     env_file: .env
     labels:

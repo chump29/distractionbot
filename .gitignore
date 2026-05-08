@@ -1,4 +1,5 @@
 .env.local
 .vscode
-db/distractionbot.db*
+coverage/
+db/distractionbot*
 node_modules/

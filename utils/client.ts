@@ -1,11 +1,14 @@
 import { ActivityType, Client, GatewayIntentBits } from "discord.js"
 
 import { info } from "@postfmly/logger"
+import { stopLogoServer } from "@postfmly/logoserver"
 
 import { closeDatabase } from "./db.ts"
-import { SERVER } from "./logo.ts"
 
 let CLIENT: Client | null = null
+const TEST_CLIENT: Client | null = null
+
+let isShutdown: boolean = false
 
 const EVENTS: string[] = [
   "SIGINT",
@@ -13,15 +16,21 @@ const EVENTS: string[] = [
 ]
 
 const shutdown = async (event: string): Promise<void> => {
+  if (isShutdown) {
+    return
+  }
+
   if (Bun.env.DEBUG) {
     info(`${event} detected`)
   }
 
   info("Shutting down...")
 
+  isShutdown = true
+
   await closeDatabase()
-    .then(async (): Promise<void> => CLIENT?.destroy())
-    .then(async (): Promise<void> => await SERVER?.stop(true))
+    .then(async (): Promise<void> => await CLIENT?.destroy())
+    .then(async (): Promise<void> => await stopLogoServer())
     .then((): void => process.exit(0))
 }
 
@@ -50,8 +59,10 @@ const client = async (): Promise<Client> => {
 }
 
 const login = async (): Promise<Client> => {
+  CLIENT = TEST_CLIENT ?? CLIENT
+
   if (!CLIENT) {
-    throw new Error("Invalid client")
+    throw new Error("Invalid CLIENT")
   }
 
   if (!Bun.env.TOKEN) {
@@ -67,4 +78,4 @@ const login = async (): Promise<Client> => {
   return CLIENT
 }
 
-export { client, login, shutdown }
+export { client, login, shutdown, TEST_CLIENT }

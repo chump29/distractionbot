@@ -9,10 +9,10 @@ import {
   SlashCommandBuilder
 } from "discord.js"
 
+import { checkRate } from "@postfmly/checkrate"
 import { info } from "@postfmly/logger"
 
 import { type IDistraction } from "../../db/schema.ts"
-import { checkRate } from "../../utils/checkRate.ts"
 import { COUNT, DISTRACTIONS } from "../../utils/loadDistractions.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
