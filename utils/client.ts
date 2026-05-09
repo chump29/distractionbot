@@ -29,7 +29,7 @@ const shutdown = async (event: string): Promise<void> => {
   isShutdown = true
 
   await closeDatabase()
-    .then(async (): Promise<void> => Promise.resolve(await CLIENT?.destroy()))
+    .then(async (): Promise<void> => await Promise.resolve(CLIENT?.destroy()))
     .then(async (): Promise<void> => await stopLogoServer())
     .then((): void => process.exit(0))
 }
