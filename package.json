@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@nano-faker/patterns": "^1.0.1",
-    "@postfmly/config": "^1.2.15",
+    "@postfmly/config": "^1.2.16",
     "@types/ms": "^2.1.0",
     "@types/pluralize": "^0.0.33",
     "drizzle-query-logger": "^1.1.2",
