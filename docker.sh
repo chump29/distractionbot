@@ -11,8 +11,3 @@ echo -e "${_build} ${_yellow}Building${_nc}:\n"
 echo -e "\n${_start} ${_yellow}Starting${_nc}:\n"
 docker container rm --force distractionbot > /dev/null 2>&1
 docker container run --rm --name distractionbot --publish 8006:8006 --env TZ=America/Chicago --detach distractionbot
-
-unset _yellow
-unset _nc
-unset _build
-unset _start
