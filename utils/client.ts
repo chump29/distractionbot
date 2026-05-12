@@ -17,6 +17,7 @@ const EVENTS: string[] = [
 
 const shutdown = async (event: string): Promise<void> => {
   if (isShutdown) {
+    info("Already shut down")
     return
   }
 

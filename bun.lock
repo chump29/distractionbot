@@ -5,9 +5,9 @@
     "": {
       "name": "distractionbot",
       "dependencies": {
-        "@postfmly/checkrate": "^1.0.1",
-        "@postfmly/logger": "^1.0.1",
-        "@postfmly/logoserver": "^1.0.4",
+        "@postfmly/checkrate": "^1.0.3",
+        "@postfmly/logger": "^1.0.3",
+        "@postfmly/logoserver": "^1.0.6",
         "discord.js": "^14.26.4",
         "drizzle-orm": "1.0.0-rc.2",
         "ms": "^2.1.3",
@@ -67,13 +67,13 @@
 
     "@nano-faker/patterns": ["@nano-faker/patterns@1.0.1", "https://npm.postfmly.com/@nano-faker/patterns/-/patterns-1.0.1.tgz", { "dependencies": { "@nano-faker/core": "^1.0.1" } }, "sha512-mgyYVDPT88OE53cvRw/1J1zXePJ9y8vuEo2UzZyR7GzriFlqP5409+I/hEcsH0HR99nsWBB8sQUNIbjmqADgSQ=="],
 
-    "@postfmly/checkrate": ["@postfmly/checkrate@1.0.1", "https://npm.postfmly.com/@postfmly/checkrate/-/checkrate-1.0.1.tgz", { "dependencies": { "@postfmly/logger": "^1.0.1", "discord.js-rate-limiter": "^1.3.2", "ms": "^2.1.3" }, "peerDependencies": { "discord.js": "^14.26.4" } }, "sha512-tXQdAk3Y8cIqZXD6TNMMABj8CF+wneNX+VXbwYu5m9yzXdeMILkaSF7XRSo0/69MRI+FBbCjP2Lj5r8cm+25Qw=="],
+    "@postfmly/checkrate": ["@postfmly/checkrate@1.0.3", "https://npm.postfmly.com/@postfmly/checkrate/-/checkrate-1.0.3.tgz", { "dependencies": { "@postfmly/logger": "^1.0.3", "discord.js-rate-limiter": "^1.3.2", "ms": "^2.1.3" }, "peerDependencies": { "discord.js": "^14.26.4" } }, "sha512-O7p1WOYNsKLESxr2ToWeS3FG+rIUy3G5DLW/9GfShIHuOH1GY9nmV/CSj1rCulICndqJnBLVQPVA6nN02f6NrQ=="],
 
     "@postfmly/config": ["@postfmly/config@1.2.16", "https://npm.postfmly.com/@postfmly/config/-/config-1.2.16.tgz", { "peerDependencies": { "@biomejs/biome": "^2.4.15", "@types/bun": "^1.3.13", "@types/node": "^25.6.0", "typescript": "^6.0.3" }, "bin": { "config-init": "bin/init" } }, "sha512-DpllNAJiv3/Y+uJ184LTBCwmVOC0gHefKthgxsxv8HEGDIO7iBuVM/1IdSR1v+FT8RLeHdCNHqV9mrbWg+0rIg=="],
 
-    "@postfmly/logger": ["@postfmly/logger@1.0.1", "https://npm.postfmly.com/@postfmly/logger/-/logger-1.0.1.tgz", { "dependencies": { "date-and-time": "^4.4.0" } }, "sha512-eFIUsuuM2CZN2Ev1bEyBHjmroKOaAIEYuFtKbcBlWo3hB/UgGAwAPW7sX30/0SIKopRiGU5wkChcWs6yqDu2VA=="],
+    "@postfmly/logger": ["@postfmly/logger@1.0.3", "https://npm.postfmly.com/@postfmly/logger/-/logger-1.0.3.tgz", { "dependencies": { "date-and-time": "^4.5.0" } }, "sha512-zR0YAAnGNvNvHx+YMxHoGl+/7xwznmeiyVvD6wjxvwec4Tw4D7Mf2FBiXNKChhexRLm8kTBNNmOLncPQP6QN6g=="],
 
-    "@postfmly/logoserver": ["@postfmly/logoserver@1.0.4", "https://npm.postfmly.com/@postfmly/logoserver/-/logoserver-1.0.4.tgz", { "dependencies": { "@postfmly/logger": "^1.0.1", "get-port": "^7.2.0", "http-status": "^2.1.0" } }, "sha512-LHie0GRkw69Qo84x0yMheT24X5jbklj0oEjwk0GHjWfuN0ZSS0hq6hEeoDJcKGRlthk+Un07isO2FZciSgtL+w=="],
+    "@postfmly/logoserver": ["@postfmly/logoserver@1.0.6", "https://npm.postfmly.com/@postfmly/logoserver/-/logoserver-1.0.6.tgz", { "dependencies": { "@postfmly/logger": "^1.0.3", "get-port": "^7.2.0", "http-status": "^2.1.0" } }, "sha512-rfIXmq6UYg3/CMFl1N6qqOpkr7SGaULVNdENDdkZT/h5+yfbh8nhFNWeMg/o+wgoa0QlfnDpK+shF+WC1lxZww=="],
 
     "@sapphire/async-queue": ["@sapphire/async-queue@1.5.5", "https://npm.postfmly.com/@sapphire/async-queue/-/async-queue-1.5.5.tgz", {}, "sha512-cvGzxbba6sav2zZkH8GPf2oGk9yYoD5qrNWdu9fRehifgnFZJMV+nuy2nON2roRO4yQQ+v7MK/Pktl/HgfsUXg=="],
 
