@@ -55,7 +55,7 @@ describe("client", (): void => {
     const intents: IntentsBitField = clientObj.options.intents
     expect(intents.has(GatewayIntentBits.Guilds)).toBeTrue()
 
-    const activities: ActivitiesOptions | undefined = clientObj.options.presence?.activities?.at(0)
+    const activities: ActivitiesOptions | undefined = clientObj.options.presence!.activities![0]
     expect(activities).not.toBeUndefined()
     expect(activities!.name === "Distracting...").toBeTrue()
     expect(activities!.type === ActivityType.Custom).toBeTrue()

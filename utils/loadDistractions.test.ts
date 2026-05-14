@@ -18,7 +18,7 @@ describe("loadDistractions", (): void => {
 
   test("loadSettings", async (): Promise<void> => {
     await loadSettings()
-    expect(DISTRACTIONS.at(0)?.distraction).toBe("TEST")
+    expect(DISTRACTIONS[0]!.distraction).toBe("TEST")
     expect(COUNT).toBe(1)
   })
 })

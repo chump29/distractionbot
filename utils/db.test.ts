@@ -46,6 +46,6 @@ afterAll(async (): Promise<void> => {
 
 describe("db", (): void => {
   test("getDistractions", async (): Promise<void> => {
-    expect((await getDistractions()).at(0)?.distraction).toEqual("TEST")
+    expect((await getDistractions())[0]!.distraction).toEqual("TEST")
   })
 })
