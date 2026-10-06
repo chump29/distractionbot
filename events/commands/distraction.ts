@@ -1,20 +1,23 @@
 import { parse } from "node:path"
 
-import { type ChatInputCommandInteraction, type RESTPostAPIChatInputApplicationCommandsJSONBody } from "discord.js"
+import {
+  type ChatInputCommandInteraction,
+  InteractionContextType,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody,
+  SlashCommandBuilder
+} from "discord.js"
 
-import { create as cravingCreate, invoke as cravingInvoke } from "./craving.ts"
+import { distract } from "../../utils/distraction.ts"
 
-// * NOTE: Alias for /craving
-
-const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  const craving: RESTPostAPIChatInputApplicationCommandsJSONBody = cravingCreate()
-  craving.name = parse(import.meta.file).name
-  craving.description = "Need a distraction"
-  return craving
-}
+const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody =>
+  new SlashCommandBuilder()
+    .setName(parse(import.meta.file).name)
+    .setDescription("Generate distraction")
+    .setContexts(InteractionContextType.Guild)
+    .toJSON()
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  await cravingInvoke(interaction)
+  await distract(interaction)
 }
 
 export { create, invoke }

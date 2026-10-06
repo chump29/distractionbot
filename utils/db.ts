@@ -1,123 +1,141 @@
-import { mkdir } from "node:fs/promises"
+import { join } from "node:path"
 
-import { Database, SQLiteError } from "bun:sqlite"
-import { type BunFile } from "bun"
+import { Database } from "bun:sqlite"
 
 import { info } from "@postfmly/logger"
+import { type Nullable } from "@postfmly/types"
 
+import { default as pluralize } from "@jarrodek/pluralize"
 import { sql } from "drizzle-orm"
-import { drizzle, type SQLiteBunDatabase } from "drizzle-orm/bun-sqlite"
-import pluralize from "pluralize"
+import { drizzle } from "drizzle-orm/bun-sqlite"
+import { migrate } from "drizzle-orm/bun-sqlite/migrator"
 
 import { distractions, type IDistraction } from "../db/schema.ts"
+import { env } from "./env.ts"
 
-let SQLITE: Database | null = null
-let TEST_SQLITE: Database | null = null
-let DB: SQLiteBunDatabase | null = null
-const TEST_DB: SQLiteBunDatabase | null = null
+type DBType = ReturnType<typeof drizzle>
 
-Bun.env.DB_NAME = Bun.env.DB_NAME || "distractionbot.db"
-Bun.env.DB_PATH = Bun.env.DB_PATH || "./db/"
-
-const loadDistractions = async (): Promise<void> => {
-  const distractionsFile: BunFile = Bun.file(`${import.meta.dirname}/distractions.txt`)
-
-  const allDistractions: IDistraction[] = (await distractionsFile.text())
-    .split("\n")
-    .filter((distraction: string): boolean => distraction.length > 0)
-    .map(
-      (distraction: string): IDistraction =>
-        ({
-          distraction: distraction.trim()
-        }) as IDistraction
-    )
-
-  if (!allDistractions?.length) {
-    throw new Error("No distractions found")
-  }
-
-  if (!DB) {
-    throw new Error("Database not open")
-  }
-
-  await DB.delete(distractions)
-
-  const rows: IDistraction[] = await DB.insert(distractions).values(allDistractions).returning()
-
-  if (Bun.env.DEBUG) {
-    info(`Inserted ${pluralize("distraction", rows.length, true)}`)
-  }
+interface IDistractionBotDatabase {
+  _db: Nullable<DBType>
+  COUNT: number
+  close: () => void
+  getDistraction: () => Promise<IDistraction>
+  init: () => Promise<void>
+  open: () => void
 }
 
-const openDatabase = async (): Promise<void> => {
-  await mkdir(Bun.env.DB_PATH, {
-    recursive: true
-  })
+class DistractionBotDatabase implements IDistractionBotDatabase {
+  private client: Nullable<Database> = null
+  _db: Nullable<DBType> = null
 
-  const DB_STR: string = `${Bun.env.DB_PATH}${Bun.env.DB_NAME}`
+  COUNT: number = 0
 
-  SQLITE = new Database(DB_STR, {
-    create: true,
-    strict: true
-  })
+  open(): void {
+    if (this._db && env.DEBUG) {
+      info("⚠️  Database already open")
 
-  if (Bun.env.NODE_ENV === "test") {
-    TEST_SQLITE = SQLITE
-  }
+      return
+    }
 
-  DB =
-    TEST_DB ??
-    drizzle({
-      client: SQLITE,
+    const dbPathName: string = join(env.DB_PATH, env.DB_NAME)
+
+    this.client = new Database(dbPathName, {
+      create: true,
+      strict: true
+    })
+
+    this.client.run(`
+      PRAGMA busy_timeout = 3000;
+      PRAGMA foreign_keys = 0;
+      PRAGMA journal_mode = WAL;
+      PRAGMA synchronous = NORMAL;
+      PRAGMA wal_checkpoint(TRUNCATE);
+    `)
+
+    this._db = drizzle({
+      client: this.client,
       jit: true
     })
 
-  DB.run(
-    sql.raw(`
-      PRAGMA journal_mode = WAL;
-      PRAGMA wal_checkpoint(TRUNCATE);`)
-  )
+    migrate(this._db, {
+      migrationsFolder: env.DB_PATH
+    })
 
-  try {
-    await DB.select().from(distractions)
-  } catch (e: unknown) {
-    if (e instanceof SQLiteError && e.message === "no such table: distractions") {
-      if (Bun.env.DEBUG) {
-        info("Creating tables")
-      }
-
-      DB.run(
-        sql.raw(`
-        CREATE TABLE distractions(
-          id INTEGER PRIMARY KEY,
-          distraction TEXT NOT NULL);`)
-      )
-
-      await loadDistractions()
-    } else {
-      throw e
+    if (env.DEBUG) {
+      info(`▶️  Using database: ${dbPathName}`)
     }
   }
 
-  if (Bun.env.DEBUG) {
-    info(`Using database: ${DB_STR}`)
+  close(): void {
+    if (!this._db && env.DEBUG) {
+      info("⚠️  Database already closed")
+    }
+
+    this.client?.close()
+    this.client = null
+
+    this._db = null
+
+    if (env.DEBUG) {
+      info("⏹️  Database closed")
+    }
+  }
+
+  private dbCheck(): DBType {
+    if (!this._db) {
+      throw new Error("Database not open")
+    }
+
+    return this._db
+  }
+
+  private async load(): Promise<void> {
+    const allDistractions: IDistraction[] = (await Bun.file(join(env.DB_PATH, "distractions.txt")).text())
+      .split("\n")
+      .map((d: string): string => d.trim())
+      .filter(Boolean)
+      .map((d: string): IDistraction => ({ distraction: d }))
+    if (allDistractions.length === 0) {
+      throw new Error("No distractions found")
+    }
+
+    if ((await this.dbCheck().$count(distractions)) !== allDistractions.length) {
+      await this.dbCheck().delete(distractions)
+
+      await this.dbCheck().insert(distractions).values(allDistractions)
+
+      if (env.DEBUG) {
+        info(`✅ Inserted ${pluralize("distraction", allDistractions.length, true)}`)
+      }
+    }
+  }
+
+  async init(): Promise<void> {
+    await this.load()
+
+    this.COUNT = await this.dbCheck().$count(distractions)
+
+    if (env.DEBUG) {
+      info(`ℹ️  Found ${pluralize("distraction", this.COUNT, true)}`)
+    }
+  }
+
+  // * /craving | /distraction
+  async getDistraction(): Promise<IDistraction> {
+    const [distraction]: IDistraction[] = await this.dbCheck()
+      .select({ distraction: distractions.distraction })
+      .from(distractions)
+      .orderBy(sql`RANDOM()`)
+      .limit(1)
+
+    if (!distraction) {
+      throw new Error("Could not get distraction")
+    }
+
+    return distraction
   }
 }
 
-const getDistractions = async (): Promise<IDistraction[]> => {
-  if (!DB) {
-    throw new Error("Database not open")
-  }
+const DB: IDistractionBotDatabase = new DistractionBotDatabase()
 
-  return await DB.select().from(distractions)
-}
-
-const closeDatabase = async (): Promise<void> => {
-  SQLITE?.close()
-
-  if (Bun.env.DEBUG) {
-    info("Database closed")
-  }
-}
-
-export { closeDatabase, getDistractions, loadDistractions, openDatabase, TEST_DB, TEST_SQLITE }
+export { DB }

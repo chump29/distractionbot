@@ -1,4 +1,3 @@
-import { type InferSelectModel } from "drizzle-orm"
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
 
 const distractions = sqliteTable("distractions", {
@@ -6,6 +5,6 @@ const distractions = sqliteTable("distractions", {
   id: integer().primaryKey()
 })
 
-type IDistraction = InferSelectModel<typeof distractions>
+type IDistraction = Omit<typeof distractions.$inferSelect, "id">
 
 export { distractions, type IDistraction }

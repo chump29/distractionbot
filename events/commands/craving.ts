@@ -3,45 +3,21 @@ import { parse } from "node:path"
 import {
   type ChatInputCommandInteraction,
   InteractionContextType,
-  MessageFlags,
-  PermissionFlagsBits,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   SlashCommandBuilder
 } from "discord.js"
 
-import { checkRate } from "@postfmly/checkrate"
-import { info } from "@postfmly/logger"
+import { distract } from "../../utils/distraction.ts"
 
-import { type IDistraction } from "../../db/schema.ts"
-import { COUNT, DISTRACTIONS } from "../../utils/loadDistractions.ts"
-
-const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody => {
-  return new SlashCommandBuilder()
+const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody =>
+  new SlashCommandBuilder()
     .setName(parse(import.meta.file).name)
-    .setDescription("Having a craving")
-    .setDefaultMemberPermissions(PermissionFlagsBits.SendMessages)
+    .setDescription("Generate distraction")
     .setContexts(InteractionContextType.Guild)
     .toJSON()
-}
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  if (await checkRate(interaction)) {
-    return
-  }
-
-  const distraction: IDistraction | undefined = DISTRACTIONS[Math.floor(Math.random() * COUNT)]
-  if (!distraction) {
-    throw new Error("Invalid distraction")
-  }
-
-  await interaction.reply({
-    content: `-# > **${distraction.distraction}**`,
-    flags: MessageFlags.Ephemeral
-  })
-
-  if (Bun.env.DEBUG) {
-    info(`Distraction: ${distraction.distraction}`)
-  }
+  await distract(interaction)
 }
 
 export { create, invoke }
