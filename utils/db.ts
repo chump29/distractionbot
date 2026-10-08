@@ -6,31 +6,24 @@ import { info } from "@postfmly/logger"
 import { type Nullable } from "@postfmly/types"
 
 import { default as pluralize } from "@jarrodek/pluralize"
-import { sql } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/bun-sqlite"
 import { migrate } from "drizzle-orm/bun-sqlite/migrator"
 
 import { distractions, type IDistraction } from "../db/schema.ts"
+import { Distraction } from "./distraction.ts"
 import { env } from "./env.ts"
 
 type DBType = ReturnType<typeof drizzle>
 
 interface IDistractionBotDatabase {
-  _db: Nullable<DBType>
-  COUNT: number
-  close: () => void
-  getDistraction: () => Promise<IDistraction>
-  init: () => Promise<void>
-  open: () => void
+  load: () => Promise<void>
 }
 
 class DistractionBotDatabase implements IDistractionBotDatabase {
   private client: Nullable<Database> = null
-  _db: Nullable<DBType> = null
+  private _db: Nullable<DBType> = null
 
-  COUNT: number = 0
-
-  open(): void {
+  private open(): void {
     if (this._db && env.DEBUG) {
       info("⚠️  Database already open")
 
@@ -66,7 +59,7 @@ class DistractionBotDatabase implements IDistractionBotDatabase {
     }
   }
 
-  close(): void {
+  private close(): void {
     if (!this._db && env.DEBUG) {
       info("⚠️  Database already closed")
     }
@@ -89,15 +82,10 @@ class DistractionBotDatabase implements IDistractionBotDatabase {
     return this._db
   }
 
-  private async load(): Promise<void> {
-    const allDistractions: IDistraction[] = (await Bun.file(join(env.DB_PATH, "distractions.txt")).text())
-      .split("\n")
-      .map((d: string): string => d.trim())
-      .filter(Boolean)
-      .map((d: string): IDistraction => ({ distraction: d }))
-    if (allDistractions.length === 0) {
-      throw new Error("No distractions found")
-    }
+  async load(): Promise<void> {
+    this.open()
+
+    const allDistractions: IDistraction[] = await Distraction.init()
 
     if ((await this.dbCheck().$count(distractions)) !== allDistractions.length) {
       await this.dbCheck().delete(distractions)
@@ -107,32 +95,9 @@ class DistractionBotDatabase implements IDistractionBotDatabase {
       if (env.DEBUG) {
         info(`✅ Inserted ${pluralize("distraction", allDistractions.length, true)}`)
       }
+
+      this.close()
     }
-  }
-
-  async init(): Promise<void> {
-    await this.load()
-
-    this.COUNT = await this.dbCheck().$count(distractions)
-
-    if (env.DEBUG) {
-      info(`ℹ️  Found ${pluralize("distraction", this.COUNT, true)}`)
-    }
-  }
-
-  // * /craving | /distraction
-  async getDistraction(): Promise<IDistraction> {
-    const [distraction]: IDistraction[] = await this.dbCheck()
-      .select({ distraction: distractions.distraction })
-      .from(distractions)
-      .orderBy(sql`RANDOM()`)
-      .limit(1)
-
-    if (!distraction) {
-      throw new Error("Could not get distraction")
-    }
-
-    return distraction
   }
 }
 

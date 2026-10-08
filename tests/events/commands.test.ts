@@ -1,8 +1,7 @@
-import { default as assert } from "node:assert/strict"
 import { readdir } from "node:fs/promises"
 import { default as path } from "node:path"
 
-import { afterAll, beforeAll, describe, expect, jest, mock, spyOn, test } from "bun:test"
+import { beforeAll, describe, expect, jest, mock, spyOn, test } from "bun:test"
 
 import { type Optional } from "@postfmly/types"
 
@@ -17,9 +16,8 @@ import {
 } from "discord.js"
 import { match } from "ts-pattern"
 
-import { distractions } from "../../db/schema.ts"
 import { author, version } from "../../package.json" with { type: "json" }
-import { DB } from "../../utils/db.ts"
+import { Distraction } from "../../utils/distraction.ts"
 import { env } from "../../utils/env.ts"
 
 interface ICommandFile {
@@ -46,19 +44,7 @@ mock.module("global", (): unknown => ({
 beforeAll(async (): Promise<void> => {
   infoSpy.mockReset()
 
-  DB.open()
-
-  assert(DB._db)
-
-  await DB._db.delete(distractions)
-
-  await DB.init()
-
-  assert(DB.COUNT > 0)
-})
-
-afterAll((): void => {
-  DB.close()
+  await Distraction.init()
 })
 
 await Promise.all(

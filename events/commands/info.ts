@@ -13,7 +13,7 @@ import {
 
 import { author, version } from "../../package.json" with { type: "json" }
 import { bucket } from "../../utils/bucket.ts"
-import { DB } from "../../utils/db.ts"
+import { Distraction } from "../../utils/distraction.ts"
 import { env } from "../../utils/env.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody =>
@@ -42,7 +42,7 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
         .setFields({
           inline: true,
           name: "Total Quotes",
-          value: DB.COUNT.toLocaleString()
+          value: Distraction.COUNT.toLocaleString()
         } as APIEmbedField)
         .setFooter({ text: `By ${author.name}` })
     ]

@@ -7,7 +7,7 @@ import {
   SlashCommandBuilder
 } from "discord.js"
 
-import { distract } from "../../utils/distraction.ts"
+import { Distraction } from "../../utils/distraction.ts"
 
 const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody =>
   new SlashCommandBuilder()
@@ -17,7 +17,7 @@ const create = (): RESTPostAPIChatInputApplicationCommandsJSONBody =>
     .toJSON()
 
 const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> => {
-  await distract(interaction)
+  await Distraction.show(interaction)
 }
 
 export { create, invoke }
