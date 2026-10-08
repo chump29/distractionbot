@@ -38,10 +38,10 @@ const invoke = async (interaction: ChatInputCommandInteraction): Promise<void> =
         .setColor(env.COLOR as HexColorString)
         .setAuthor({ iconURL: env.LOGO_URL, name: `${env.NAME} v${version}` })
         .setThumbnail(env.LOGO_URL)
-        .setDescription("- Show quotes")
+        .setDescription("- Show distractions")
         .setFields({
           inline: true,
-          name: "Total Quotes",
+          name: "Total Distractions",
           value: Distraction.COUNT.toLocaleString()
         } as APIEmbedField)
         .setFooter({ text: `By ${author.name}` })
