@@ -38,5 +38,7 @@ describe("distraction", (): void => {
 
     expect(mockEditReply).toHaveBeenCalled()
     expect(payload.content.length).toBeGreaterThan(0)
+
+    expect(infoSpy).toHaveBeenCalledTimes(2)
   })
 })

@@ -1,7 +1,7 @@
 import { readdir } from "node:fs/promises"
 import { default as path } from "node:path"
 
-import { beforeAll, describe, expect, jest, mock, spyOn, test } from "bun:test"
+import { beforeAll, describe, expect, jest, spyOn, test } from "bun:test"
 
 import { type Optional } from "@postfmly/types"
 
@@ -34,12 +34,6 @@ const dir: string = "events/commands"
 const commands: string[] = (await readdir(dir)).filter((file: string): boolean => file.endsWith(".ts"))
 
 const infoSpy: jest.Mock = spyOn(console, "info")
-
-mock.module("global", (): unknown => ({
-  Bun: {
-    stop: jest.fn().mockReturnValue(undefined)
-  }
-}))
 
 beforeAll(async (): Promise<void> => {
   infoSpy.mockReset()

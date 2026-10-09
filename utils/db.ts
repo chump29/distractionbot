@@ -95,9 +95,9 @@ class DistractionBotDatabase implements IDistractionBotDatabase {
       if (env.DEBUG) {
         info(`✅ Inserted ${pluralize("distraction", allDistractions.length, true)}`)
       }
-
-      this.close()
     }
+
+    this.close()
   }
 }
 
