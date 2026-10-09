@@ -53,7 +53,7 @@ class DistractionBotClient implements IDistractionBotClient {
     }
   }
 
-  async init(testClient: Nullable<DiscordClient> = null): Promise<void> {
+  async init(testClient?: DiscordClient): Promise<void> {
     this.LOGO_SERVER = new LogoServer({
       DEBUG: env.DEBUG,
       LOGO_NAME: env.LOGO_NAME,
