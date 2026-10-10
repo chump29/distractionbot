@@ -1,6 +1,6 @@
 import { default as process } from "node:process"
 
-import { beforeAll, beforeEach, describe, expect, jest, spyOn, test } from "bun:test"
+import { afterEach, beforeAll, beforeEach, describe, expect, jest, spyOn, test } from "bun:test"
 
 import { simpleFaker as fake } from "@faker-js/faker"
 import { type ClientUser, type Client as DiscordClient } from "discord.js"
@@ -31,11 +31,16 @@ beforeEach(async (): Promise<void> => {
   } as unknown as DiscordClient)
 })
 
+afterEach(async (): Promise<void> => {
+  await Client.shutdown()
+})
+
 describe("client", (): void => {
   test("init", (): void => {
     const count: number = 5
 
     expect(infoSpy).toHaveBeenCalledTimes(count)
+
     expect(infoSpy).toHaveBeenNthCalledWith(count, expect.any(String), expect.stringContaining(env.NAME))
     expect(infoSpy).toHaveBeenNthCalledWith(count, expect.any(String), expect.stringContaining(tag))
 

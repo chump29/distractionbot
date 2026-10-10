@@ -21,12 +21,12 @@ class DistractionBotClient implements IDistractionBotClient {
 
   private isShutdown: boolean = false
 
-  async shutdown(event: string = "ERROR"): Promise<void> {
+  async shutdown(event?: string): Promise<void> {
     if (this.isShutdown) {
       return
     }
 
-    if (env.DEBUG) {
+    if (event && env.DEBUG) {
       info(`❌ ${event} detected`)
     }
 

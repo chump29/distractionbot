@@ -8,10 +8,12 @@ import { env } from "../../utils/env.ts"
 
 const infoSpy: jest.Mock = spyOn(console, "info")
 
+const path: string = join(env.DB_PATH, env.DB_NAME)
+
 beforeAll(async (): Promise<void> => {
   infoSpy.mockReset()
 
-  for await (const file of glob(join(env.DB_PATH, `${env.DB_NAME}*`))) {
+  for await (const file of glob(`${path}*`)) {
     await unlink(file)
   }
 })
@@ -21,6 +23,9 @@ describe("db", (): void => {
     expect(DB.load()).resolves.toBe(undefined)
 
     const TIMES: number = 8
+
     expect(infoSpy).toHaveBeenCalledTimes(TIMES)
+
+    expect(infoSpy).toHaveBeenNthCalledWith(2, expect.any(String), expect.stringContaining(path))
   })
 })

@@ -1,6 +1,6 @@
 import { join } from "node:path"
 
-import { info } from "@postfmly/logger"
+import { error, info } from "@postfmly/logger"
 import { type Nullable } from "@postfmly/types"
 
 import { default as pluralize } from "@jarrodek/pluralize"
@@ -46,11 +46,7 @@ class DistractionBot implements IDistractionBot {
   }
 
   private getDistraction(): Nullable<IDistraction> {
-    if (this.random === null) {
-      throw new Error("Could not get random")
-    }
-
-    return this.DISTRACTIONS[this.random()] ?? null
+    return this.random ? (this.DISTRACTIONS[this.random()] ?? null) : null
   }
 
   // * /craving | /distraction
@@ -65,7 +61,9 @@ class DistractionBot implements IDistractionBot {
 
     const distraction: Nullable<IDistraction> = this.getDistraction()
     if (!distraction) {
-      await interaction.editReply({ content: "-# > ❌ Could not get distraction" })
+      await interaction.editReply({ content: "-# > ❌ Something went wrong." })
+
+      error("Could not get distraction")
 
       return
     }

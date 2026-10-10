@@ -40,5 +40,10 @@ describe("distraction", (): void => {
     expect(payload.content.length).toBeGreaterThan(0)
 
     expect(infoSpy).toHaveBeenCalledTimes(2)
+    expect(infoSpy).toHaveBeenNthCalledWith(
+      2,
+      expect.any(String),
+      expect.stringContaining(Distraction.COUNT.toString())
+    )
   })
 })

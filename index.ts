@@ -11,7 +11,9 @@ try {
 
   info(`🟢 ${env.ACTIVITY}....`)
 } catch (e: unknown) {
-  error(e)
+  const msg: string = (e as Error).message
 
-  await Client.shutdown()
+  error(msg)
+
+  await Client.shutdown(msg)
 }
