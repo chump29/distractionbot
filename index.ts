@@ -13,7 +13,7 @@ try {
 } catch (e: unknown) {
   const msg: string = (e as Error).message
 
-  error(msg)
+  error(`❌ ${msg}`)
 
   await Client.shutdown(msg)
 }

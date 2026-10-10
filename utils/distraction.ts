@@ -63,7 +63,7 @@ class DistractionBot implements IDistractionBot {
     if (!distraction) {
       await interaction.editReply({ content: "-# > ❌ Something went wrong" })
 
-      error("Could not get distraction")
+      error("❌ Could not get distraction")
 
       return
     }
