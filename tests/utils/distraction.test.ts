@@ -5,10 +5,10 @@ import { type ChatInputCommandInteraction, type User } from "discord.js"
 
 import { Distraction } from "../../utils/distraction.ts"
 
-const infoSpy: jest.Mock = spyOn(console, "info")
+let infoSpy: jest.Mock
 
 beforeAll(async (): Promise<void> => {
-  infoSpy.mockReset()
+  infoSpy = spyOn(console, "info").mockImplementation((): void => undefined) // suppress
 
   await Distraction.init()
 })

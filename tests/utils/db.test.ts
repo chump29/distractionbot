@@ -6,12 +6,12 @@ import { beforeAll, describe, expect, type jest, spyOn, test } from "bun:test"
 import { DB } from "../../utils/db.ts"
 import { env } from "../../utils/env.ts"
 
-const infoSpy: jest.Mock = spyOn(console, "info")
+let infoSpy: jest.Mock
 
 const path: string = join(env.DB_PATH, env.DB_NAME)
 
 beforeAll(async (): Promise<void> => {
-  infoSpy.mockReset()
+  infoSpy = spyOn(console, "info").mockImplementation((): void => undefined) // suppress
 
   for await (const file of glob(`${path}*`)) {
     await unlink(file)
