@@ -7,8 +7,10 @@ import { type Optional } from "@postfmly/types"
 
 import { fakerEN_US as fake } from "@faker-js/faker"
 import {
+  type APIEmbed,
   type ChannelManager,
   type ChatInputCommandInteraction,
+  EmbedBuilder,
   type Guild,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
   type TextChannel,
@@ -86,14 +88,14 @@ await Promise.all(
         match<string, void>(name)
           .with("craving", (): void => expect(payload.content.length).toBeGreaterThan(0))
           .with("info", (): void => {
-            const data = payload.embeds?.[0].data
+            const { data }: { data: APIEmbed } = EmbedBuilder.from(payload.embeds?.[0])
 
             expect(decimalToHex(data.color)).toBe(env.COLOR)
-            expect(data.author.icon_url).toBe(env.LOGO_URL)
-            expect(data.author.name).toBe(`${env.NAME} v${version}`)
-            expect(data.thumbnail.url).toBe(env.LOGO_URL)
+            expect(data.author?.icon_url).toBe(env.LOGO_URL)
+            expect(data.author?.name).toBe(`${env.NAME} v${version}`)
+            expect(data.thumbnail?.url).toBe(env.LOGO_URL)
             expect(data.description).not.toBeEmpty()
-            expect(data.footer.text).toEndWith(author.name)
+            expect(data.footer?.text).toEndWith(author.name)
           })
           .with("ping", (): void => expect(payload.content).toInclude("Pong"))
           .with("distraction", (): void => expect(payload.content.length).toBeGreaterThan(0))
