@@ -1,7 +1,7 @@
 import { join } from "node:path"
 
 import { error, info } from "@postfmly/logger"
-import { type Nullable } from "@postfmly/types"
+import { type Optional } from "@postfmly/types"
 
 import { default as pluralize } from "@jarrodek/pluralize"
 import { type ChatInputCommandInteraction, MessageFlags } from "discord.js"
@@ -19,7 +19,8 @@ interface IDistractionBot {
 
 class DistractionBot implements IDistractionBot {
   private DISTRACTIONS: IDistraction[] = []
-  private random: Nullable<ReturnType<typeof exhaustiveUniqueRandom>> = null
+
+  private random!: ReturnType<typeof exhaustiveUniqueRandom>
 
   get COUNT(): number {
     return this.DISTRACTIONS.length
@@ -45,10 +46,6 @@ class DistractionBot implements IDistractionBot {
     return this.DISTRACTIONS
   }
 
-  private getDistraction(): Nullable<IDistraction> {
-    return this.random ? (this.DISTRACTIONS[this.random()] ?? null) : null
-  }
-
   // * /craving | /distraction
   async show(interaction: ChatInputCommandInteraction): Promise<void> {
     await interaction.deferReply({ flags: MessageFlags.Ephemeral })
@@ -59,7 +56,7 @@ class DistractionBot implements IDistractionBot {
       return
     }
 
-    const distraction: Nullable<IDistraction> = this.getDistraction()
+    const distraction: Optional<IDistraction> = this.DISTRACTIONS[this.random()]
     if (!distraction) {
       await interaction.editReply({ content: "-# > ❌ Something went wrong" })
 
