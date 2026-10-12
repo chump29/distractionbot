@@ -40,12 +40,12 @@
 
 #### Commands:
 
-|         📋 Task         |   🔧 Command   | ⚙️ Permission |
-|:-----------------------:|:--------------:|:-------------:|
-|   Craving<sup>1</sup>   |   `/craving`   |     None      |
-| Distraction<sup>1</sup> | `/distraction` |     None      |
-|          Info           |    `/info`     |     None      |
-|          Ping           |    `/ping`     |     None      |
+|         📋 Task         |   🔧 Command   |
+|:-----------------------:|:--------------:|
+|   Craving<sup>1</sup>   |   `/craving`   |
+| Distraction<sup>1</sup> | `/distraction` |
+|          Info           |    `/info`     |
+|          Ping           |    `/ping`     |
 
 ###### <sup>1</sup> *Identical functionality* <!-- markdownlint-disable-line MD001 -->
 
