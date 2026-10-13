@@ -1,13 +1,13 @@
 import { error, info } from "@postfmly/logger"
 
 import { Client } from "./utils/client.ts"
-import { DB } from "./utils/db.ts"
+import { Distraction } from "./utils/distraction.ts"
 import { env } from "./utils/env.ts"
 
 try {
-  await DB.load()
-
   await Client.init()
+
+  await Distraction.init()
 
   info(`🟢 ${env.ACTIVITY}....`)
 } catch (e: unknown) {

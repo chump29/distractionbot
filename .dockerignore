@@ -2,7 +2,7 @@
 
 !.husky/prepare.min.mjs
 !bun.lock
-!db/
+!distractions.txt
 !events/
 !healthcheck.sh
 !index.ts
@@ -10,5 +10,3 @@
 !patches/
 !tsconfig.json
 !utils/
-
-db/distractionbot*

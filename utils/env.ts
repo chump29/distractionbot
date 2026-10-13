@@ -81,8 +81,6 @@ if (Bun.env.NODE_ENV === "test") {
 const env = cleanEnv(Bun.env, {
   ACTIVITY: str({ default: "Distracting" }),
   COLOR: colorValidator({ default: "#78866b" }),
-  DB_NAME: str({ default: "distractionbot.db", testDefault: "distractionbot.test.db" }),
-  DB_PATH: str({ default: "./db" }),
   DEBUG: bool({ default: false, testDefault: true }),
   LOGO_NAME: str({ default: "distractionbot.webp" }),
   LOGO_PATH: str({ default: "./utils/images" }),

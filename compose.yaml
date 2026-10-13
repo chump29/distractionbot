@@ -5,8 +5,6 @@ services:
     restart: unless-stopped
     ports:
       - "8006:8006"
-    volumes:
-      - db:/app/db
     environment:
       - LOGO_PORT=8006
       - LOGO_URL=https://distractionbot.postfmly.us/distractionbot.webp
@@ -17,8 +15,5 @@ services:
       - homepage.group=Personal
       - homepage.name=DistractionBot
       - homepage.icon=https://distractionbot.postfmly.com/distractionbot.webp
-
-volumes:
-  db:
 
 networks: {}

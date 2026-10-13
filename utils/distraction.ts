@@ -1,5 +1,3 @@
-import { join } from "node:path"
-
 import { error, info } from "@postfmly/logger"
 import { type Optional } from "@postfmly/types"
 
@@ -7,9 +5,12 @@ import { default as pluralize } from "@jarrodek/pluralize"
 import { type ChatInputCommandInteraction, MessageFlags } from "discord.js"
 import { exhaustiveUniqueRandom } from "unique-random"
 
-import { type IDistraction } from "../db/schema.ts"
 import { env } from "../utils/env.ts"
 import { bucket } from "./bucket.ts"
+
+interface IDistraction {
+  distraction: string
+}
 
 interface IDistractionBot {
   readonly COUNT: number
@@ -27,7 +28,7 @@ class DistractionBot implements IDistractionBot {
   }
 
   async init(): Promise<IDistraction[]> {
-    this.DISTRACTIONS = (await Bun.file(join(env.DB_PATH, "distractions.txt")).text())
+    this.DISTRACTIONS = (await Bun.file("distractions.txt").text())
       .split("\n")
       .map((d: string): string => d.trim())
       .filter(Boolean)

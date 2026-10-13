@@ -6,8 +6,6 @@
 
 ![Bun](https://img.shields.io/badge/Bun-$_bun-informational?style=plastic&logo=bun) &nbsp;
 ![discord.js](https://img.shields.io/badge/discord.js-$_discord-informational?style=plastic&logo=discord.js) &nbsp;
-![Drizzle](https://img.shields.io/badge/Drizzle-$_drizzle-informational?style=plastic&logo=drizzle) &nbsp;
-![SQLite](https://img.shields.io/badge/SQLite-$_sqlite-informational?style=plastic&logo=sqlite)
 
 ![CodeQL](https://github.com/$_user/$_repo/workflows/CodeQL/badge.svg) &nbsp;
 ![Coverage](https://img.shields.io/badge/Coverage-$_coverage%25-success?style=plastic&logo=jest)
@@ -59,8 +57,6 @@
 |:-----------------------:|:-----------:|:-----------------:|
 |        Activity         |  ACTIVITY   |    Distracting    |
 | Embed Color<sup>1</sup> |    COLOR    |      #78866b      |
-|         DB Name         |   DB_NAME   | distractionbot.db |
-|         DB Path         |   DB_PATH   |       ./db        |
 |          Debug          |    DEBUG    |  true/**false**   |
 |        Bot Name         |    NAME     |  DistractionBot   |
 |        Bot Token        |    TOKEN    |     \<token>      |
@@ -91,13 +87,11 @@
 
 ### 📃 Distractions
 
-`./db/distractions.txt`
+`distractions.txt`
 
 ```txt
 Distraction example
 ```
-
-###### *NOTE: Automatically refreshed during startup* <!-- markdownlint-disable-line MD001 -->
 
 ---
 
