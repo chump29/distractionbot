@@ -20,8 +20,8 @@ describe("distraction", (): void => {
 
   test("show", (): void => {
     const interaction: ChatInputCommandInteraction = {
-      deferReply: jest.fn().mockResolvedValue(undefined),
-      editReply: jest.fn().mockResolvedValue(undefined),
+      deferReply: jest.fn(),
+      editReply: jest.fn(),
       user: {
         name: fake.internet.username()
       } as unknown as User
