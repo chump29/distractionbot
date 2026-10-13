@@ -84,11 +84,12 @@ await Promise.all(
         if (!payload) {
           throw new Error("Payload not found")
         }
-        const { data }: { data: APIEmbed } = EmbedBuilder.from(payload.embeds?.[0])
 
         match<string, void>(name)
           .with("craving", (): void => expect(payload.content.length).toBeGreaterThan(0))
           .with("info", (): void => {
+            const { data }: { data: APIEmbed } = EmbedBuilder.from(payload.embeds?.[0])
+
             expect(decimalToHex(data.color)).toBe(env.COLOR)
             expect(data.author?.icon_url).toBe(env.LOGO_URL)
             expect(data.author?.name).toBe(`${env.NAME} v${version}`)
