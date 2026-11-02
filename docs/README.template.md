@@ -1,4 +1,4 @@
-# ![DistractionBot](./utils/images/distractionbot.webp) DistractionBot
+# ![DistractionBot](./utils/images/distractionbot.webp "DistractionBot") DistractionBot
 
 > - DistractionBot for Discord
 
@@ -33,13 +33,13 @@
 #### Role Permissions:
 
 | ⚙️ Permission |
-|:-------------:|
+| :-----------: |
 |     None      |
 
 #### Commands:
 
 |         📋 Task         |   🔧 Command   |
-|:-----------------------:|:--------------:|
+| :---------------------: | :------------: |
 |   Craving<sup>1</sup>   |   `/craving`   |
 | Distraction<sup>1</sup> | `/distraction` |
 |          Info           |    `/info`     |
@@ -53,20 +53,20 @@
 
 #### Environment Variables:
 
-|     📝 Description      | 📌 Variable |    {...} Value    |
-|:-----------------------:|:-----------:|:-----------------:|
-|        Activity         |  ACTIVITY   |    Distracting    |
-| Embed Color<sup>1</sup> |    COLOR    |      #78866b      |
-|          Debug          |    DEBUG    |  true/**false**   |
-|        Bot Name         |    NAME     |  DistractionBot   |
-|        Bot Token        |    TOKEN    |     \<token>      |
+|     📝 Description      | 📌 Variable |  {...} Value   |
+| :---------------------: | :---------: | :------------: |
+|        Activity         |  ACTIVITY   |  Distracting   |
+| Embed Color<sup>1</sup> |    COLOR    |    #78866b     |
+|          Debug          |    DEBUG    | true/**false** |
+|        Bot Name         |    NAME     | DistractionBot |
+|        Bot Token        |    TOKEN    |    \<token>    |
 
 ###### <sup>1</sup> #RRGGBB format <!-- markdownlint-disable-line MD001 -->
 
 ##### From `@postfmly/logoserver`:
 
 | 📝 Description | 📌 Variable |     {...} Value     |
-|:--------------:|:-----------:|:-------------------:|
+| :------------: | :---------: | :-----------------: |
 |   Logo Name    |  LOGO_NAME  | distractionbot.webp |
 |   Local Path   |  LOGO_PATH  |   ./utils/images    |
 |      Port      |  LOGO_PORT  |  **Random**/[port]  |
@@ -74,12 +74,12 @@
 
 ##### From `@postfmly/ratecheck`:
 
-###### *NOTE: Rate limited to 1 request per 1 second*
+###### _NOTE: Rate limited to 1 request per 1 second_
 
 #### Deployment:
 
 |  📜 Script  |  🔧 Command   |
-|:-----------:|:-------------:|
+| :---------: | :-----------: |
 |    Full     | `./build.sh`  |
 | Docker Only | `./docker.sh` |
 

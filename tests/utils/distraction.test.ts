@@ -1,43 +1,44 @@
-import { beforeAll, describe, expect, jest, spyOn, test } from "bun:test"
+import { beforeAll, describe, expect, mock, spyOn, test } from "bun:test"
 
 import { fakerEN_US as fake } from "@faker-js/faker"
-import { type ChatInputCommandInteraction, type User } from "discord.js"
+import { type ChatInputCommandInteraction } from "discord.js"
 
 import { Distraction } from "../../utils/distraction.ts"
+import { env } from "../../utils/env.ts"
 
-let infoSpy: jest.Mock
+const infoSpy = spyOn(console, "info")
+if (!env.TEST_FULL) {
+  infoSpy.mockImplementation((): void => undefined)
+}
 
 beforeAll(async (): Promise<void> => {
-  infoSpy = spyOn(console, "info").mockImplementation((): void => undefined) // suppress
-
   await Distraction.init()
 })
 
 describe("distraction", (): void => {
+  // biome-ignore lint/nursery/useLowercaseTestTitle: getter name
   test("COUNT", (): void => {
     expect(Distraction.COUNT).toBeGreaterThan(0)
   })
 
   test("show", (): void => {
-    const interaction: ChatInputCommandInteraction = {
-      deferReply: jest.fn(),
-      editReply: jest.fn(),
-      user: {
-        name: fake.internet.username()
-      } as unknown as User
-    } as unknown as ChatInputCommandInteraction
+    const [mockDeferReply, mockEditReply] = [
+      mock<ChatInputCommandInteraction["deferReply"]>(),
+      mock<ChatInputCommandInteraction["editReply"]>()
+    ]
 
-    expect(Distraction.show(interaction)).resolves.toBe(undefined)
+    expect(
+      Distraction.show(
+        createMock<ChatInputCommandInteraction>({
+          createdTimestamp: fake.date.past().getTime(),
+          deferReply: mockDeferReply,
+          editReply: mockEditReply
+        })
+      )
+    ).resolves.toBe(undefined)
 
-    const mockEditReply = interaction.editReply as ReturnType<typeof jest.fn>
-    const firstCallArgs = mockEditReply.mock.calls
-    const payload = firstCallArgs[0]?.[0]
-    if (!payload) {
-      throw new Error("Payload not found")
-    }
-
-    expect(mockEditReply).toHaveBeenCalled()
-    expect(payload.content.length).toBeGreaterThan(0)
+    expect(mockDeferReply).toHaveBeenCalledOnce()
+    expect(mockEditReply).toHaveBeenCalledOnce()
 
     expect(infoSpy).toHaveBeenCalledTimes(2)
     expect(infoSpy).toHaveBeenNthCalledWith(

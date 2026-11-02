@@ -1,14 +1,14 @@
-# ![DistractionBot](./utils/images/distractionbot.webp) DistractionBot
+# ![DistractionBot](./utils/images/distractionbot.webp "DistractionBot") DistractionBot
 
 > - DistractionBot for Discord
 
 ---
 
-![Bun](https://img.shields.io/badge/Bun-1.4.3-informational?style=plastic&logo=bun) &nbsp;
-![discord.js](https://img.shields.io/badge/discord.js-^14.27.0-informational?style=plastic&logo=discord.js) &nbsp;
+![Bun](https://img.shields.io/badge/Bun-1.4.4-informational?style=plastic&logo=bun) &nbsp;
+![discord.js](https://img.shields.io/badge/discord.js-^14.28.0-informational?style=plastic&logo=discord.js) &nbsp;
 
 ![CodeQL](https://github.com/chump29/distractionbot/workflows/CodeQL/badge.svg) &nbsp;
-![Coverage](https://img.shields.io/badge/Coverage-86.42%25-success?style=plastic&logo=jest)
+![Coverage](https://img.shields.io/badge/Coverage-79.1%25-success?style=plastic&logo=jest)
 
 ![NO AI](https://img.shields.io/badge/NO-AI-orange?style=plastic "NO AI") &nbsp;
 ![License](https://img.shields.io/github/license/chump29/distractionbot?style=plastic&color=blueviolet&label=License&logo=gplv3 "GPLv3") &nbsp; <!-- markdownlint-disable MD013 -->
@@ -33,13 +33,13 @@
 #### Role Permissions:
 
 | ⚙️ Permission |
-|:-------------:|
+| :-----------: |
 |     None      |
 
 #### Commands:
 
 |         📋 Task         |   🔧 Command   |
-|:-----------------------:|:--------------:|
+| :---------------------: | :------------: |
 |   Craving<sup>1</sup>   |   `/craving`   |
 | Distraction<sup>1</sup> | `/distraction` |
 |          Info           |    `/info`     |
@@ -53,20 +53,20 @@
 
 #### Environment Variables:
 
-|     📝 Description      | 📌 Variable |    {...} Value    |
-|:-----------------------:|:-----------:|:-----------------:|
-|        Activity         |  ACTIVITY   |    Distracting    |
-| Embed Color<sup>1</sup> |    COLOR    |      #78866b      |
-|          Debug          |    DEBUG    |  true/**false**   |
-|        Bot Name         |    NAME     |  DistractionBot   |
-|        Bot Token        |    TOKEN    |     \<token>      |
+|     📝 Description      | 📌 Variable |  {...} Value   |
+| :---------------------: | :---------: | :------------: |
+|        Activity         |  ACTIVITY   |  Distracting   |
+| Embed Color<sup>1</sup> |    COLOR    |    #78866b     |
+|          Debug          |    DEBUG    | true/**false** |
+|        Bot Name         |    NAME     | DistractionBot |
+|        Bot Token        |    TOKEN    |    \<token>    |
 
 ###### <sup>1</sup> #RRGGBB format <!-- markdownlint-disable-line MD001 -->
 
 ##### From `@postfmly/logoserver`:
 
 | 📝 Description | 📌 Variable |     {...} Value     |
-|:--------------:|:-----------:|:-------------------:|
+| :------------: | :---------: | :-----------------: |
 |   Logo Name    |  LOGO_NAME  | distractionbot.webp |
 |   Local Path   |  LOGO_PATH  |   ./utils/images    |
 |      Port      |  LOGO_PORT  |  **Random**/[port]  |
@@ -74,12 +74,12 @@
 
 ##### From `@postfmly/ratecheck`:
 
-###### *NOTE: Rate limited to 1 request per 1 second*
+###### _NOTE: Rate limited to 1 request per 1 second_
 
 #### Deployment:
 
 |  📜 Script  |  🔧 Command   |
-|:-----------:|:-------------:|
+| :---------: | :-----------: |
 |    Full     | `./build.sh`  |
 | Docker Only | `./docker.sh` |
 

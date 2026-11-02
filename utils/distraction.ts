@@ -70,6 +70,4 @@ class DistractionBot implements IDistractionBot {
   }
 }
 
-const Distraction: IDistractionBot = new DistractionBot()
-
-export { Distraction }
+export const Distraction = new DistractionBot()
