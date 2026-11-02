@@ -15,10 +15,6 @@ import { author, version } from "../../package.json" with { type: "json" }
 import { Distraction } from "../../utils/distraction.ts"
 import { env } from "../../utils/env.ts"
 
-if (!env.TEST_FULL) {
-  spyOn(console, "info").mockImplementation((): void => undefined)
-}
-
 const HEX_BASE = 16
 const COLOR_LEN = 6
 const decimalToHex = (c: Optional<number>): string => (c ? `#${c.toString(HEX_BASE).padStart(COLOR_LEN, "0")}` : "N/A")
